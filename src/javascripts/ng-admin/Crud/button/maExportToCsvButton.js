@@ -22,7 +22,6 @@ export default function maExportToCsvButton ($stateParams, Papa, notification, A
                 exportView.name(listView.name()); // to enable reuse of sortField
             }
             scope.has_export = exportView.fields().length > 0;
-            var formatEntry = entryFormatter.getFormatter(exportView.fields());
 
             scope.exportToCsv = function () {
                 var rawEntries;
@@ -46,6 +45,7 @@ export default function maExportToCsvButton ($stateParams, Papa, notification, A
                     })
                     .then(function () {
                         var entries = exportView.mapEntries(rawEntries);
+                        var formatEntry = entryFormatter.getFormatter(exportView.fields());
 
                         // shortcut to diplay collection of entry with included referenced values
                         scope.datastore.fillReferencesValuesFromCollection(entries, exportView.getReferences(), true);

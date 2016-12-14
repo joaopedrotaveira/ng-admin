@@ -22,9 +22,61 @@ npm install ng-admin --save
 bower install ng-admin --save
 ```
 
-Add the `ng-admin.min.css` and `ng-admin.min.js` to the HTML, add a `<div ui-view>`, and configure the admin:
+### With a Module Bundler
 
-```html
+`ng-admin` is fully compatible with Webpack, and should also be compatible with all
+available major module bundlers. If you use one of them, you just have to add this line:
+
+``` js
+const myApp = angular.module('myApp', [
+    require('ng-admin'),
+    // ...
+]);
+```
+
+**Important note:** as we include HTML templates using `require` to prevent the AJAX
+request implied by `templateUrl`, you will need to configure your module bundler
+to deal with HTML. It can be accomplished with Webpack using the HTML loader:
+
+``` js
+module.exports = {
+    // ...
+    module: {
+        loaders: [
+            // ...
+            { test: /\.html$/, loader: 'html' },
+        ]
+    },
+};
+```
+
+If your module bundler also supports SASS or CSS, you can also include stylesheets using:
+
+``` js
+// SASS version
+require('ng-admin/lib/sass/ng-admin.scss');
+
+// CSS version
+require('ng-admin/build/ng-admin.min.css');
+```
+
+Using a module bundler, you would also be able to generate the source map for all your JavaScript
+and stylesheets, helping you to hunt even the most obscure bugs.
+
+### Without a Module Bundler
+
+If you don't have a module bundler, don't worry: you can still include `ng-admin` with a `<script>` tag:
+
+``` html
+<link rel="stylesheet" href="node_modules/ng-admin/build/ng-admin.min.css">
+<script src="node_modules/ng-admin/build/ng-admin.min.js"></script>
+```
+
+## Bootstrapping your Admin
+
+Add the `ng-admin.min.css` and `ng-admin.min.js` to the HTML, add a `<div ui-view="ng-admin">`, and configure the admin:
+
+``` html
 <!doctype html>
 <html lang="en">
   <head>
@@ -32,7 +84,7 @@ Add the `ng-admin.min.css` and `ng-admin.min.js` to the HTML, add a `<div ui-vie
     <link rel="stylesheet" href="node_modules/ng-admin/build/ng-admin.min.css">
   </head>
   <body ng-app="myApp">
-    <div ui-view></div>
+    <div ui-view="ng-admin"></div>
     <script src="node_modules/ng-admin/build/ng-admin.min.js"></script>
     <script type="text/javascript">
     var myApp = angular.module('myApp', ['ng-admin']);
@@ -154,6 +206,10 @@ Ng-admin is an open-source project, with a community getting larger every  day. 
 
 Please give as much context as possible, including and admin configuration snippet, and the response from the API you're mapping.
 
+## Looking For a Material UI / React.js version?
+
+[marmelab/admin-on-rest](https://github.com/marmelab/admin-on-rest), by the same team, uses a different architecture but provides a similar service: an admin GUI for REST APIs, this time with React.js, Redux, react-router, and material UI.
+
 ## Contributing
 
 Your feedback about the usage of ng-admin in your specific context is valuable, don't hesitate to [open GitHub Issues](https://github.com/marmelab/ng-admin/issues) for any problem or question you may have.
@@ -191,7 +247,7 @@ make test
 **Tip:** If you are working on Karma tests, you can prevent from relaunching the whole process by disabling single-run:
 
 ```
-KARMA_SINGLE_RUN=false ./node_modules/.bin/grunt karma:unit
+./node_modules/.bin/karma start src/javascripts/test/karma.conf.js
 ```
 
 ### Releasing

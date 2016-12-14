@@ -53,13 +53,17 @@ Create a new field of the given type. Default type is 'string', so you can omit 
 Define the label of the field. Defaults to the uppercased field name.
 
 * `editable(boolean)`
-Define if the field is editable in the edition form. Usefult to display a field without allowing edition (e.g for creation date).
+Define if the field is editable in the edition form. Useful to display a field without allowing edition (e.g for creation date).
+
+* `sortable(boolean)`
+Define if the field is sortable in the list view (default `true`).
+(See ["Sort Columns and Sort Order"](../API-mapping.md#sort-columns-and-sort-order) for a discussion of how to integrate `ng-admin` sorting with your REST backend.)
 
 * `order(number|null)`
 Define the position of the field in the view.
 
 * `isDetailLink(boolean)`
-Tell if the value is a link in the list view. Default to true for the identifier and references field, false otherwise. The link points to the edition view, except for read-only entities, where it points to the show view.
+Tell if the value is a link in the list view. Defaults to true for the identifier and references field, false otherwise. The link points to the edition view, except for read-only entities, where it points to the show view.
 
 * `detailLinkRoute(string)`
 Define the route for a link in the list view, i.e. `isDetailLink` of the field is true. The default is `edit`, hence the link points to the edition view. The other option is `show` to point to the show view.
@@ -702,7 +706,7 @@ post.editionView().fields([
 ]);
 ```
 
-` reference_many` fields render as a list of labels in rerad context (`listView` and `showView`), and as a select multiple in write context (`creationView` and `editionView`). For that field, ng-admin fetches the related entities one by one:
+` reference_many` fields render as a list of labels in read context (`listView` and `showView`), and as a select multiple in write context (`creationView` and `editionView`). For that field, ng-admin fetches the related entities one by one:
 
 ```
 GET /posts/456 <= get the main entity

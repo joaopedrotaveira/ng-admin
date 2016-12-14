@@ -20,7 +20,7 @@ Ng-admin is a client-side library, used to build single-page admin applications.
         <link rel="stylesheet" href="node_modules/ng-admin/build/ng-admin.min.css">
     </head>
     <body ng-app="myApp">
-        <div ui-view></div>
+        <div ui-view="ng-admin"></div>
         <script src="node_modules/ng-admin/build/ng-admin.min.js" type="text/javascript"></script>
         <script src="admin.js" type="text/javascript"></script>
     </body>
@@ -207,7 +207,7 @@ The `_page`, `_perPage`, `_sortDir`, and `_sortField` query parameters are added
 
 http://jsonplaceholder.typicode.com/users?_start=1&_end=30&_order=DESC&_sort=id
 
-But it's very easy to map the two flavors. Ng-admin relies on a powerful REST client called [Restangular](https://github.com/mgonto/restangular). To configure Restangular, you must write an *interceptor*, which is a simple function receiving the response from the web server and transforming it before it is passed to ng-admin.
+But it's very easy to map the two flavors. Ng-admin relies on a powerful REST client called [Restangular](https://github.com/mgonto/restangular). To configure Restangular, you must write an *interceptor*, which is a simple function intercepting the request in order to transform it before it is passed to ng-admin.
 
 Here is the configuration script required to map the JSONPlaceholder REST flavor with ng-admin REST flavor:
 
@@ -339,8 +339,6 @@ post.showView().fields([
 ```
 
 The `referenced_list` field type displays a datagrid for one-to-many relationships. In this examples, by specifying how comments and posts are related (via the `postId` field in the referenced `comments`), ng-admin manages to fetch related entities.
-
-As a side note, you can see that it's possible to create a reference to a non-existent entity (`nga.entity('comments)` creates the related entity for the occasion).
 
 The new post show view is directly accessible from the listView, by clicking on the id of a post in the list.
 
@@ -604,6 +602,9 @@ myApp.config(['NgAdminConfigurationProvider', function (nga) {
     var admin = nga.application('My First Admin')
       .baseApiUrl('http://jsonplaceholder.typicode.com/'); // main API endpoint
 
+    var comment = nga.entity('comments'); // the API endpoint for users will be 'http://jsonplaceholder.typicode.com/comments/:id
+    admin.addEntity(comment);
+    
     var user = nga.entity('users'); // the API endpoint for users will be 'http://jsonplaceholder.typicode.com/users/:id
         user.listView()
         .fields([
